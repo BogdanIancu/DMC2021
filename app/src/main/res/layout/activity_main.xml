@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textViewLocation"
+    <Spinner
+        android:id="@+id/spinnerLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -26,7 +26,7 @@
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerLocation" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toEndOf="@+id/textViewTemperature"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLocation"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerLocation"
         app:srcCompat="@android:drawable/ic_delete" />
 
     <TextView

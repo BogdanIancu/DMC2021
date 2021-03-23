@@ -8,7 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int ADD_CITY_REQ_CODE = 1;
 
     private List<City> cities = new ArrayList<>();
+    private List<String> namesOfCities = new ArrayList<>();
+    private Spinner spinnerLocation = null;
+    private ArrayAdapter<String> adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +43,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"DMC 2021", Toast.LENGTH_LONG).show();
             }
         });
+
+        spinnerLocation = findViewById(R.id.spinnerLocation);
+        adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, namesOfCities);
+        spinnerLocation.setAdapter(adapter);
     }
 
     public void moreDetailsClick(View view) {
-        TextView textViewLocation = findViewById(R.id.textViewLocation);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://openweathermap.org/city/" + textViewLocation.getText()));
-        startActivity(intent);
+        Spinner spinnerLocation = findViewById(R.id.spinnerLocation);
+        if(spinnerLocation != null && spinnerLocation.getSelectedItem() != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://openweathermap.org/city/" + spinnerLocation.getSelectedItem().toString()));
+            startActivity(intent);
+        }
     }
 
     public void addNewCityClick(View view) {
@@ -55,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == ADD_CITY_REQ_CODE && resultCode == RESULT_OK && data != null) {
             City city = (City)data.getSerializableExtra("newCity");
             cities.add(city);
+            namesOfCities.add(city.toString());
+            if(adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }
