@@ -10,4 +10,6 @@
     <string name="country_text">Tara</string>
     <string name="add_city">Adauga oras</string>
     <string name="add_new_city">Adauga oras nou</string>
+    <string name="forecast_text">Prognoza</string>
+    <string name="date_placeholder">dd/MM/yyyy</string>
 </resources>

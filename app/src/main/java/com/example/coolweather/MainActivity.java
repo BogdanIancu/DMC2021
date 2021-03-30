@@ -62,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, ADD_CITY_REQ_CODE);
     }
 
+    public void forecastClick(View view) {
+        Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
+        if(spinnerLocation != null && spinnerLocation.getSelectedItem() != null) {
+            String location = spinnerLocation.getSelectedItem().toString();
+            intent.putExtra("location", location);
+        }
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

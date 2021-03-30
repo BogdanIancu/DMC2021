@@ -78,6 +78,18 @@
         android:layout_marginBottom="32dp"
         android:onClick="addNewCityClick"
         android:text="@string/add_new_city"
+        app:layout_constraintBottom_toTopOf="@+id/buttonForecast"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonForecast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:onClick="forecastClick"
+        android:text="@string/forecast_text"
         app:layout_constraintBottom_toTopOf="@+id/buttonDetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
