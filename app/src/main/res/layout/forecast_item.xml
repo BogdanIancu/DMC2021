@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textViewItemTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/temperature_placeholder"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_row="0"
+        android:layout_column="0"/>
+
+    <ImageView
+        android:id="@+id/imageViewItem"
+        android:layout_width="80dp"
+        android:layout_height="83dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/image_description"
+        android:src="@android:drawable/ic_delete"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="0"
+        android:layout_column="1"/>
+
+    <TextView
+        android:id="@+id/textViewItemConditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/conditions_placeholder"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="1"
+        android:layout_column="1"/>
+
+    <TextView
+        android:id="@+id/textViewItemDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date_placeholder"
+        android:layout_gravity="start"
+        android:layout_marginStart="32dp"
+        android:layout_row="1"
+        android:layout_column="0"/>
+</GridLayout>
