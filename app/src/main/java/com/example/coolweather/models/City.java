@@ -2,7 +2,7 @@ package com.example.coolweather.models;
 
 import java.io.Serializable;
 
-public class City implements Serializable {
+public class City implements Serializable, Comparable<City>{
     private String name;
     private String country;
 
@@ -30,5 +30,10 @@ public class City implements Serializable {
     @Override
     public String toString() {
         return name + ", " + country;
+    }
+
+    @Override
+    public int compareTo(City o) {
+        return name.compareTo(o.name);
     }
 }
