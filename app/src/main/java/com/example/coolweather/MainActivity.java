@@ -219,9 +219,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(WeatherCondition weatherCondition) {
             super.onPostExecute(weatherCondition);
-            conditionsTextView.setText(weatherCondition.getDescription());
-            temperatureTextView.setText(String.format("%d° C", weatherCondition.getTemperature()));
-            imageView.setImageBitmap(weatherCondition.getImage());
+            if(weatherCondition != null) {
+                conditionsTextView.setText(weatherCondition.getDescription());
+                temperatureTextView.setText(String.format("%d° C", weatherCondition.getTemperature()));
+                imageView.setImageBitmap(weatherCondition.getImage());
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "The weather data cannot be refreshed right now. Try again later!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
