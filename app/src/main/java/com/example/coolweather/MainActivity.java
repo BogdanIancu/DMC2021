@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class WeatherWorker extends AsyncTask<String, Void, WeatherCondition> {
-        private final static String API_KEY = "YOUR_API_KEY_HERE";
+        private final static String API_KEY = "7b10426ee90376dc3d6525f847128b35";
 
         @Override
         protected WeatherCondition doInBackground(String... strings) {

@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.example.coolweather.adapters.ForecastAdapter;
 import com.example.coolweather.models.WeatherCondition;
+import com.example.coolweather.workers.ForecastWorker;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class ForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
 
-        List<WeatherCondition> conditions = WeatherCondition.genetateRandomData();
-        ForecastAdapter adapter = new ForecastAdapter(getApplicationContext(), R.layout.forecast_item, conditions);
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        String location = getIntent().getStringExtra("location");
+
+        ForecastWorker worker = new ForecastWorker(this, location);
+        worker.start();
     }
 }

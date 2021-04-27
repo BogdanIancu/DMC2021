@@ -32,7 +32,7 @@ public class ForecastAdapter extends ArrayAdapter<WeatherCondition> {
         WeatherCondition condition = getItem(position);
 
         TextView temperatureTextView = convertView.findViewById(R.id.textViewItemTemperature);
-        temperatureTextView.setText(String.format("%d *C", condition.getTemperature()));
+        temperatureTextView.setText(String.format("%d °C", condition.getTemperature()));
 
         ImageView imageView = convertView.findViewById(R.id.imageViewItem);
         imageView.setImageBitmap(condition.getImage());
