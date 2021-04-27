@@ -41,7 +41,7 @@ public class ForecastWorker extends Thread {
     @Override
     public void run() {
         super.run();
-        final String API_KEY = "7b10426ee90376dc3d6525f847128b35";
+        final String API_KEY = "YOUR_API_KEY_HERE";
 
         try {
             URL url = new URL(String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&appid=%s&mode=xml&units=metric&cnt=7&lang=ro",
