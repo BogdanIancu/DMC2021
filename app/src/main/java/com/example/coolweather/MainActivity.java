@@ -1,5 +1,6 @@
 package com.example.coolweather;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +24,11 @@ import android.widget.Toast;
 
 import com.example.coolweather.models.City;
 import com.example.coolweather.models.WeatherCondition;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.json.JSONArray;
@@ -36,7 +43,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -80,20 +89,45 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        SharedPreferences sharedPreferences = getSharedPreferences("cities", MODE_PRIVATE);
-        Set<String> cityNames = sharedPreferences.getStringSet("names", null);
-        if(cityNames != null) {
-            cities.clear();
-            for(String name : cityNames) {
-                String[] values = name.split(", ");
-                City city = new City(values[0], values[1]);
-                cities.add(city);
-            }
-        }
+//        SharedPreferences sharedPreferences = getSharedPreferences("cities", MODE_PRIVATE);
+//        Set<String> cityNames = sharedPreferences.getStringSet("names", null);
+//        if(cityNames != null) {
+//            cities.clear();
+//            for(String name : cityNames) {
+//                String[] values = name.split(", ");
+//                City city = new City(values[0], values[1]);
+//                cities.add(city);
+//            }
+//        }
 
         spinnerLocation = findViewById(R.id.spinnerLocation);
         adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, cities);
         spinnerLocation.setAdapter(adapter);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        DatabaseReference reference = firebaseDatabase.getReference(androidId).child("cities");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<HashMap<String, String>> cloudSavedCities = (ArrayList<HashMap<String, String>>)dataSnapshot.getValue();
+                if(cloudSavedCities != null) {
+                    cities.clear();
+                    for(HashMap<String, String> map : cloudSavedCities) {
+                        City city = new City("", "");
+                        city.setCountry(map.get("country"));
+                        city.setName(map.get("name"));
+                        cities.add(city);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,14 +158,19 @@ public class MainActivity extends AppCompatActivity {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        SharedPreferences sharedPreferences = getSharedPreferences("cities", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Set<String> set = new TreeSet<>();
-        for(City city : cities) {
-            set.add(city.toString());
-        }
-        editor.putStringSet("names", set);
-        editor.commit();
+//        SharedPreferences sharedPreferences = getSharedPreferences("cities", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Set<String> set = new TreeSet<>();
+//        for(City city : cities) {
+//            set.add(city.toString());
+//        }
+//        editor.putStringSet("names", set);
+//        editor.commit();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        DatabaseReference reference = firebaseDatabase.getReference(androidId).child("cities");
+        reference.setValue(cities);
     }
 
     public void moreDetailsClick(View view) {

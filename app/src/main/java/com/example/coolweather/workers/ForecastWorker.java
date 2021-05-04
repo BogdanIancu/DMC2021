@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ListView;
 
+import androidx.room.Room;
+
 import com.example.coolweather.R;
 import com.example.coolweather.adapters.ForecastAdapter;
+import com.example.coolweather.models.AppDatabase;
 import com.example.coolweather.models.WeatherCondition;
 
 import org.w3c.dom.Document;
@@ -32,16 +35,19 @@ import javax.xml.parsers.ParserConfigurationException;
 public class ForecastWorker extends Thread {
     private Activity activity;
     private String location;
+    private AppDatabase database;
 
     public ForecastWorker(Activity activity, String location) {
         this.activity = activity;
         this.location = location;
+        database = Room.databaseBuilder(activity, AppDatabase.class, "database").build();
     }
 
     @Override
     public void run() {
         super.run();
         final String API_KEY = "YOUR_API_KEY_HERE";
+        final List<WeatherCondition> result = new ArrayList<>();
 
         try {
             URL url = new URL(String.format("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s&appid=%s&mode=xml&units=metric&cnt=7&lang=ro",
@@ -54,7 +60,7 @@ public class ForecastWorker extends Thread {
             Document xml = builder.parse(inputStream);
             Node forecastNode = xml.getElementsByTagName("forecast").item(0);
             NodeList days = forecastNode.getChildNodes();
-            List<WeatherCondition> result = new ArrayList<>();
+            database.weatherConditionDAO().deleteAll();
             for(int i = 0; i < days.getLength(); i++) {
                 WeatherCondition condition = new WeatherCondition();
                 Node node = days.item(i);
@@ -75,15 +81,8 @@ public class ForecastWorker extends Thread {
                 Bitmap img = BitmapFactory.decodeStream(connection.getInputStream());
                 condition.setImage(img);
 
-                result.add(condition);
+                database.weatherConditionDAO().insert(condition);
             }
-
-            activity.runOnUiThread(() -> {
-                ForecastAdapter adapter = new ForecastAdapter(activity, R.layout.forecast_item, result);
-                ListView listView = activity.findViewById(R.id.listView);
-                listView.setAdapter(adapter);
-            });
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -95,5 +94,13 @@ public class ForecastWorker extends Thread {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        result.clear();
+        result.addAll(database.weatherConditionDAO().getAll());
+
+        activity.runOnUiThread(() -> {
+            ForecastAdapter adapter = new ForecastAdapter(activity, R.layout.forecast_item, result);
+            ListView listView = activity.findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+        });
     }
 }
