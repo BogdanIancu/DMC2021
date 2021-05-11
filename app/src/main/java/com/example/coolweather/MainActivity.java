@@ -39,6 +39,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -192,6 +193,11 @@ public class MainActivity extends AppCompatActivity {
             String location = spinnerLocation.getSelectedItem().toString();
             intent.putExtra("location", location);
         }
+        startActivity(intent);
+    }
+
+    public void chartClick(View view) {
+        Intent intent = new Intent(MainActivity.this, ChartActivity.class);
         startActivity(intent);
     }
 
